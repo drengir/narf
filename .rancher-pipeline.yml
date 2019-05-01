@@ -1,6 +1,9 @@
 stages:
 - name: build
   steps:
+  - runScriptConfig:
+      image: multiarch/qemu-user-static:register
+      shellScript: date
   - publishImageConfig:
       dockerfilePath: ./Dockerfile
       buildContext: .
