@@ -1,0 +1,9 @@
+stages:
+- name: build
+  steps:
+  - publishImageConfig:
+      dockerfilePath: ./Dockerfile
+      buildContext: .
+      tag: drengir/narf2
+timeout: 60
+notification: {}
