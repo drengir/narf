@@ -1,6 +1,7 @@
 var eventSource = new EventSource("/stream")
 
-eventSource.onmessage = function(e) {
+eventSource.onmessage = function(event) {
   var targetContainer = document.getElementById("target_div");
-  targetContainer.innerHTML = e.data;
+  var data = JSON.parse(event.data);
+  targetContainer.innerHTML = data.time;
 };

@@ -3,6 +3,7 @@ import time
 from flask import Flask
 from flask import render_template
 from flask import Response
+import json
 
 app = Flask(__name__)
 
@@ -25,8 +26,8 @@ def stream():
 def get_message():
     '''this could be any function that blocks until data is ready'''
     time.sleep(1.0)
-    current_time = time.ctime(time.time())
-    return current_time
+    data = {'time': time.ctime(time.time())}
+    return json.dumps(data)
 
 
 if __name__ == "__main__":
