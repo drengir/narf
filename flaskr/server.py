@@ -25,11 +25,16 @@ def get_message():
     time.sleep(5.0)
     cal = get_calendar()
     event_str = ''
-    for event in cal.get_events():
-        with app.app_context():
-            event_str += render_template('event.html', event=event)
 
-    data = {'time': time.ctime(time.time()), 'calendarEvents': event_str}
+    with app.app_context():
+        jinja_render = render_template('calendar.jinja', events = cal.get_events())
+
+#    for event in cal.get_events():
+#        with app.app_context():
+#            event_str += render_template('event.html', event=event)
+
+#    data = {'time': time.ctime(time.time()), 'calendarEvents': event_str}
+    data = {'time': time.ctime(time.time()), 'calendarEvents': jinja_render}
     return json.dumps(data)
 
 
