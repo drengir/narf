@@ -55,7 +55,7 @@ def get_calendar():
 def get_nfc():
     use_mock = 'USE_NFC_MOCK' in os.environ and os.environ['USE_NFC_MOCK'].lower() == "true"
     if use_mock:
-        from nfc_mock import Nfc
+        from nfc_client_mock import Nfc
         print("using NFC mock!")
         return Nfc()
     try:
