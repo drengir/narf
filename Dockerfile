@@ -6,12 +6,12 @@ WORKDIR /usr/src/app
 RUN \
   echo "deb-src http://deb.debian.org/debian stretch main" >> /etc/apt/sources.list && \
   apt-get update && \
-  apt-get -y --no-install-recommends install apt-utils bash openssl curl openssh-client python python-pip
+  apt-get -y --no-install-recommends install apt-utils bash python3 python3-pip
 
 COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt --no-cache-dir
 
 COPY flaskr ./
  
 EXPOSE 5000
-CMD ["python","./server.py"]
+CMD ["python3","./server.py"]
