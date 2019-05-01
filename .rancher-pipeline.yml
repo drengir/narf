@@ -5,7 +5,7 @@ stages:
       image: multiarch/qemu-user-static:register
       shellScript: date
   - publishImageConfig:
-      dockerfilePath: ./Dockerfile
+      dockerfilePath: ./Dockerfile-Rancher
       buildContext: .
       tag: drengir/narf2
       pushRemote: true
