@@ -40,7 +40,7 @@ class Calendar():
         # Call the Calendar API
         now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
         events_result = service.events().list(calendarId=cal_id, timeMin=now,
-                                              maxResults=5, singleEvents=True,
+                                              maxResults=2, singleEvents=True,
                                               orderBy='startTime').execute()
         events = events_result.get('items', [])
 
