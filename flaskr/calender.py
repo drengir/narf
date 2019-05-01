@@ -9,6 +9,54 @@ from google.auth.transport.requests import Request
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 
+class Calender():
+
+
+    def __init__(self):
+        self.creds   = None
+
+    def loadToken(self):
+        if os.path.exists('token.pickle'):
+            with open('token.pickle', 'rb') as token:
+                self.creds = pickle.load(token)
+        if not self.creds or not self.creds.valid:
+            self.login()
+
+    def login(self):
+        if self.creds and self.creds.expired and self.creds.refresh_token:
+            self.creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(
+                'credentials.json', SCOPES)
+            self.creds = flow.run_local_server()
+        # Save the credentials for the next run
+        with open('token.pickle', 'wb') as token:
+            pickle.dump(creds, token)
+
+    def get(self):
+        if not self.creds: self.loadToken()
+        service = build('calendar', 'v3', credentials=self.creds)
+
+        # Call the Calendar API
+        now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+        print('Getting the upcoming 3 events')
+        events_result = service.events().list(calendarId='primary', timeMin=now,
+                                              maxResults=3, singleEvents=True,
+                                              orderBy='startTime').execute()
+        events = events_result.get('items', [])
+
+        if not events: 
+            print("No events found")
+            return {}
+
+        for event in events:
+            start = event['start'].get('dateTime', event['start'].get('date'))
+            if not "location" in event: event["location"] = "no room"
+            print(start, event['summary'], event["location"])
+        print(events)
+        return events
+
+
 def main():
     """Shows basic usage of the Google Calendar API.
     Prints the start and name of the next 10 events on the user's calendar.
@@ -36,9 +84,9 @@ def main():
 
     # Call the Calendar API
     now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
-    print('Getting the upcoming 10 events')
+    print('Getting the upcoming 2 events')
     events_result = service.events().list(calendarId='primary', timeMin=now,
-                                        maxResults=1, singleEvents=True,
+                                        maxResults=2, singleEvents=True,
                                         orderBy='startTime').execute()
     events = events_result.get('items', [])
 
@@ -49,4 +97,5 @@ def main():
         print(start, event['summary'])
 
 if __name__ == '__main__':
-    main()
+    cal = Calender()
+    cal.get()
