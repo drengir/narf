@@ -1,5 +1,5 @@
 from __future__ import print_function
-import datetime
+import datetime, time
 import pickle
 import os.path
 from googleapiclient.discovery import build
@@ -48,11 +48,21 @@ class Calendar():
             print(cal_id[:26], "-> No events found")
             return {}
 
+        date_format = '%Y-%m-%d'
         for event in events:
             start = event['start'].get('dateTime', event['start'].get('date'))
             end   = event['end'].get('dateTime', event['end'].get('date'))
+            date   = start.split("T")[0]
+            start2 = start.split("T")[1].split("+")[0]
+            end2   = end.split("T")[1].split("+")[0]
             if not "location" in event: event["location"] = "no room"
             print(cal_id[:26], "->", start, "-", end, event['summary'], event["location"])
+            event["startTime"] = start2
+            event["endTime"]   = end2
+            event["eventDate"] = date
+            if event == events[0]: event["mainEvent"] = True
+            else:                  event["mainEvent"] = False
+        print(events)
         return events
 
 
