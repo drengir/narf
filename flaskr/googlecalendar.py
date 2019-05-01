@@ -33,7 +33,7 @@ class Calendar():
         with open('token.pickle', 'wb') as token:
             pickle.dump(self.creds, token)
 
-    def get(self, cal_id = "primary"):
+    def get_events(self, cal_id = "primary"):
         if not self.creds: self.loadToken()
         service = build('calendar', 'v3', credentials=self.creds)
 
@@ -58,5 +58,5 @@ class Calendar():
 
 if __name__ == '__main__':
     cal = Calendar()
-    cal.get("a3suuihq983gnr1k7td668lmpk@group.calendar.google.com")
-    cal.get("sagkegsn0eb8lesd8ej0gssnko@group.calendar.google.com")
+    cal.get_events("a3suuihq983gnr1k7td668lmpk@group.calendar.google.com")
+    cal.get_events("sagkegsn0eb8lesd8ej0gssnko@group.calendar.google.com")
