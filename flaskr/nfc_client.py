@@ -61,5 +61,6 @@ class Nfc():
 
             nfc.close(pnd)
         nfc.exit(context)
-
-        return nt.nti.nai.abtUid
+        uid = nt.nti.nai.abtUid
+        print("UID: {}".format(uid))
+        return uid
