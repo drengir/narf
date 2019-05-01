@@ -2,3 +2,6 @@
 
 # narf
 Pinky and the Brain
+
+
+To use the mock NFC class set the env var `USE_NFC_MOCK` to `true`
