@@ -23,3 +23,7 @@ def get_message():
     time.sleep(1.0)
     s = time.ctime(time.time())
     return s
+
+
+if __name__ == "__main__":
+    app.run()
