@@ -28,18 +28,21 @@ def get_message():
 
     # return empty page
     if batch_id is None:
-        data = {'time': time.ctime(time.time()), 'calendarEvents': None}
-        return json.dumps(data)
+        print("batch_id is non, resetting to start page")
+        with app.app_context():
+            jinja_render = render_template('welcome.jinja')
+            data = {'time': time.ctime(time.time()), 'calendarEvents': jinja_render}
+            return json.dumps(data)
 
     calendar_id = map_nfc_to_calendar_id(batch_id)
-    cal = get_calendar()
+
     events = cal.get_events(calendar_id)
     if not events:
         data = {'time': time.ctime(time.time()), 'calendarEvents': "Calendar not found :-("}
         return json.dumps(data)
 
     with app.app_context():
-        jinja_render = render_template('calendar.jinja', events = cal.get_events())
+        jinja_render = render_template('calendar.jinja', events = events)
 
     data = {'time': time.ctime(time.time()), 'calendarEvents': jinja_render}
     return json.dumps(data)
@@ -64,6 +67,7 @@ def map_nfc_to_calendar_id(batch_id):
     return None
 
 nfc = get_nfc()
+cal = get_calendar()
 
 if __name__ == "__main__":
     app.run(host = "0.0.0.0")

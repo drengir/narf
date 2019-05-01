@@ -15,7 +15,6 @@ class Calendar():
     def __init__(self):
         self.creds   = None
 
-
     def load_token(self):
         if os.path.exists('token.pickle'):
             with open('token.pickle', 'rb') as token:
