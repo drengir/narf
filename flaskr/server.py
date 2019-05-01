@@ -54,16 +54,16 @@ def get_calendar():
 
 def get_nfc():
     use_mock = 'USE_NFC_MOCK' in os.environ and os.environ['USE_NFC_MOCK'].lower() == "true"
-    use_mock = True
-
     if use_mock:
         from nfc_mock import Nfc
+    else:
+        from nfc import Nfc
+
     return Nfc()
 
 def map_nfc_to_calendar_id(batch_id):
     if batch_id == 'mock_id':
         return "a3suuihq983gnr1k7td668lmpk@group.calendar.google.com"
-    
     return None
 
 nfc = get_nfc()
