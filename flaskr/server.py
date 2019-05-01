@@ -1,15 +1,12 @@
 import time
+import json
 
 from flask import Flask
 from flask import render_template
 from flask import Response
-import json
+from google_calender import Calendar
 
 app = Flask(__name__)
-
-@app.route('/hello')
-def hello():
-    return 'Hello, World!'
 
 @app.route('/')
 def root():
@@ -29,6 +26,11 @@ def get_message():
     data = {'time': time.ctime(time.time())}
     return json.dumps(data)
 
+
+def get_calendar():
+    cal = Calendar()
+    cal.get_calendar()
+    
 
 if __name__ == "__main__":
     app.run()
