@@ -7,7 +7,5 @@ stages:
       tag: drengir/narf2
       pushRemote: true
       registry: index.docker.io
-    when:
-      event: tag
 timeout: 60
 notification: {}
