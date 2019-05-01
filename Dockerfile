@@ -1,4 +1,4 @@
-FROM hypriot/rpi-alpine-scratch
+FROM python:3.7
 LABEL maintainer=vikings<containersolutions@mobi.ch>
 WORKDIR /usr/src/app
 COPY json_exporter.py ./
