@@ -4,7 +4,7 @@ import json
 from flask import Flask
 from flask import render_template
 from flask import Response
-from google_calender import Calendar
+from googlecalendar import Calendar
 
 app = Flask(__name__)
 
@@ -22,14 +22,17 @@ def stream():
 
 def get_message():
     '''this could be any function that blocks until data is ready'''
-    time.sleep(1.0)
+    time.sleep(10.0)
+    cal = get_calendar()
+    print(cal)
     data = {'time': time.ctime(time.time())}
     return json.dumps(data)
 
 
 def get_calendar():
     cal = Calendar()
-    cal.get_calendar()
+    cal.get("a3suuihq983gnr1k7td668lmpk@group.calendar.google.com")
+    return cal
     
 
 if __name__ == "__main__":

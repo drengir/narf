@@ -9,7 +9,7 @@ from google.auth.transport.requests import Request
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 
-class Calender():
+class Calendar():
 
 
     def __init__(self):
@@ -57,6 +57,6 @@ class Calender():
 
 
 if __name__ == '__main__':
-    cal = Calender()
+    cal = Calendar()
     cal.get("a3suuihq983gnr1k7td668lmpk@group.calendar.google.com")
     cal.get("sagkegsn0eb8lesd8ej0gssnko@group.calendar.google.com")
