@@ -2,10 +2,12 @@ stages:
 - name: build
   steps:
   - publishImageConfig:
-      dockerfilePath: ./Dockerfile
+      dockerfilePath: ./Dockerfile-Rancher
       buildContext: .
       tag: drengir/narf2
       pushRemote: true
       registry: index.docker.io
+    when:
+      event: tag
 timeout: 60
 notification: {}

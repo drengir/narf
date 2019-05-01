@@ -10,12 +10,12 @@ from google.auth.transport.requests import Request
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 
 class Calendar():
-
+    """ User is hardcorded, only calender can be changed """
 
     def __init__(self):
         self.creds   = None
 
-    def loadToken(self):
+    def load_token(self):
         if os.path.exists('token.pickle'):
             with open('token.pickle', 'rb') as token:
                 self.creds = pickle.load(token)
@@ -33,14 +33,14 @@ class Calendar():
         with open('token.pickle', 'wb') as token:
             pickle.dump(self.creds, token)
 
-    def get(self, cal_id = "primary"):
-        if not self.creds: self.loadToken()
+    def get_events(self, cal_id = "primary"):
+        if not self.creds: self.load_token()
         service = build('calendar', 'v3', credentials=self.creds)
 
         # Call the Calendar API
         now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
         events_result = service.events().list(calendarId=cal_id, timeMin=now,
-                                              maxResults=5, singleEvents=True,
+                                              maxResults=2, singleEvents=True,
                                               orderBy='startTime').execute()
         events = events_result.get('items', [])
 
@@ -58,5 +58,5 @@ class Calendar():
 
 if __name__ == '__main__':
     cal = Calendar()
-    cal.get("a3suuihq983gnr1k7td668lmpk@group.calendar.google.com")
-    cal.get("sagkegsn0eb8lesd8ej0gssnko@group.calendar.google.com")
+    cal.get_events("a3suuihq983gnr1k7td668lmpk@group.calendar.google.com")
+    cal.get_events("sagkegsn0eb8lesd8ej0gssnko@group.calendar.google.com")

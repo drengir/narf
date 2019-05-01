@@ -2,12 +2,21 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Narf</title>
-    <link rel="stylesheet" href="static/spectre.min.css">
+    <title>Drengir: Narf</title>
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
     <script src="static/script.js"></script>
   </head>
   <body>
-    <!-- page content -->
-    <div id="target_div">Watch this space...</div>
+    <header class="navbar">
+      <section class="navbar-section">
+        <div class="p-centered h2">Projekt NARF</div>
+      </section>
+    </header>
+    <div class="divider"></div>
+    <div class="container" id="calender_div">
+      <div class="p-centered">{% include 'welcome.jinja' %}</div>
+    </div>
   </body>
 </html>

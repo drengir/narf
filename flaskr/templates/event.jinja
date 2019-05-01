@@ -1,0 +1,19 @@
+<div class="column col-xs-4">
+<div class="empty">
+  <div class="empty-icon">
+    <i class="icon icon-time"></i>
+  </div>
+  <p class="empty-title h4">{{ event.summary }}</p>
+  <p class="empty-subtitle">
+    Start: {{ event.start.get('dateTime', event.start.get('date')) }}
+    <br>
+    Ende: {{ event.end.get('dateTime', event.end.get('date')) }}
+  </p>
+  <div class="empty-action">
+    <h1>Raum: {{ event.location }}</h1>
+    <form action="show?map={{ event.location }}.jpg">
+      <button class="btn btn-lg">Situationsplan</button>
+    </form>
+  </div>
+</div>
+</div>
