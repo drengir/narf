@@ -36,6 +36,9 @@ def get_message():
 
     calendar_id = map_nfc_to_calendar_id(batch_id)
 
+    if calendar_id is None:
+        raise Exception("No calendar mapping for uid {} found".format(batch_id))
+
     events = cal.get_events(calendar_id)
     if not events:
         data = {'time': time.ctime(time.time()), 'calendarEvents': "Calendar not found :-("}
