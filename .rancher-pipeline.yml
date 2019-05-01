@@ -1,9 +1,4 @@
 stages:
-- name: prepare
-  steps:
-  - runScriptConfig:
-      image: multiarch/qemu-user-static:register
-      shellScript: date
 - name: build
   steps:
   - publishImageConfig:
