@@ -1,5 +1,6 @@
 FROM arm32v7/debian:stretch-slim 
 LABEL maintainer=vikings<containersolutions@mobi.ch>
+COPY bin/qemu-arm-static /usr/bin
 WORKDIR /usr/src/app
 
 RUN \
