@@ -10,12 +10,13 @@ from google.auth.transport.requests import Request
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 
 class Calendar():
-
+    """ User is hardcorded, only calender can be changed """
 
     def __init__(self):
         self.creds   = None
 
-    def loadToken(self):
+
+    def load_token(self):
         if os.path.exists('token.pickle'):
             with open('token.pickle', 'rb') as token:
                 self.creds = pickle.load(token)
@@ -34,7 +35,7 @@ class Calendar():
             pickle.dump(self.creds, token)
 
     def get_events(self, cal_id = "primary"):
-        if not self.creds: self.loadToken()
+        if not self.creds: self.load_token()
         service = build('calendar', 'v3', credentials=self.creds)
 
         # Call the Calendar API
