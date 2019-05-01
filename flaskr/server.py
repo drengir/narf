@@ -28,7 +28,6 @@ def get_message():
     for event in cal.get_events():
         with app.app_context():
             event_str += render_template('event.html', event=event)
-    print(event_str)
 
     data = {'time': time.ctime(time.time()), 'calendarEvents': event_str}
     return json.dumps(data)
