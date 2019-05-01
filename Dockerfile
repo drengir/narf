@@ -1,4 +1,5 @@
-FROM python:3.7
+FROM arm32v7/debian:stretch-slim 
+COPY qemu-arm-static /usr/bin
 LABEL maintainer=vikings<containersolutions@mobi.ch>
 WORKDIR /usr/src/app
 
