@@ -9,7 +9,9 @@ RUN \
   apt-get -y --no-install-recommends install apt-utils bash python3 python3-pip
 
 COPY requirements.txt requirements.txt
-RUN pip3 install -r requirements.txt --no-cache-dir
+RUN pip3 install -r requirements.txt --no-cache-dir &&\
+    pip3 install pylint && \
+    pylint --disable=C *.py
 
 COPY flaskr ./
  
