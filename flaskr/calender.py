@@ -31,7 +31,7 @@ class Calender():
             self.creds = flow.run_local_server()
         # Save the credentials for the next run
         with open('token.pickle', 'wb') as token:
-            pickle.dump(creds, token)
+            pickle.dump(self.creds, token)
 
     def get(self, cal_id = "primary"):
         if not self.creds: self.loadToken()
