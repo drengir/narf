@@ -1,16 +1,16 @@
 <div class="column col-xs-4">
-<div class="empty">
+<div class="empty {% if not event.mainEvent %}opacity{% endif %}">
   <div class="empty-icon">
     <i class="icon icon-time"></i>
   </div>
-  <p class="empty-title h4">{{ event.summary }}</p>
-  <p class="empty-subtitle">
-    Start: {{ event.start.get('dateTime', event.start.get('date')) }}
-    <br>
-    Ende: {{ event.end.get('dateTime', event.end.get('date')) }}
+  <p class="empty-title">
+    <h3>{{ event.summary }}</h3>
+    <h5>Datum: {{ event.eventDate }}</h5>
+    <h5>Von: {{ event.startTime }}</h5>
+    <h5>Bis: {{ event.endTime }}</h5>
   </p>
   <div class="empty-action">
-    <h1>Raum: {{ event.location }}</h1>
+    <h1>{{ event.location }}</h1>
     <form action="show?map={{ event.location }}.jpg">
       <button class="btn btn-lg">Situationsplan</button>
     </form>
