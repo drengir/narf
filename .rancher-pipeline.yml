@@ -1,9 +1,11 @@
 stages:
-- name: build
+- name: prepare
   steps:
   - runScriptConfig:
       image: multiarch/qemu-user-static:register
       shellScript: date
+- name: build
+  steps:
   - publishImageConfig:
       dockerfilePath: ./Dockerfile-Rancher
       buildContext: .
