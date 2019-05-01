@@ -5,5 +5,7 @@ stages:
       dockerfilePath: ./Dockerfile
       buildContext: .
       tag: drengir/narf2
+      pushRemote: true
+      registry: index.docker.io
 timeout: 60
 notification: {}
