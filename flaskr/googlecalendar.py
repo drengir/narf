@@ -50,6 +50,7 @@ class Calendar():
 
         date_format = '%Y-%m-%d'
         for event in events:
+            # parse event from calendar
             start = event['start'].get('dateTime', event['start'].get('date'))
             end   = event['end'].get('dateTime', event['end'].get('date'))
             date   = start.split("T")[0]
@@ -67,5 +68,6 @@ class Calendar():
 
 if __name__ == '__main__':
     cal = Calendar()
+    cal.get_events("primary")
     cal.get_events("a3suuihq983gnr1k7td668lmpk@group.calendar.google.com")
     cal.get_events("sagkegsn0eb8lesd8ej0gssnko@group.calendar.google.com")
