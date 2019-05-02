@@ -60,7 +60,7 @@ class Nfc():
         # List ISO14443A targets
         target = nfc.target()
         target_count = nfc.initiator_poll_target(self.device, modulation, 1, 30, 1, target)
-        if(target_count > 0):
+        if(target_count >= 0):
             if (verbose):
                 print(target_count, 'ISO14443A passive target(s) found')
             nfc.print_nfc_target(target, verbose)
@@ -69,10 +69,5 @@ class Nfc():
             print("UID byte: {}".format(uid))
             uid = str(int.from_bytes(uid, byteorder='little'))
             print("UID int: {}".format(uid))
-        elif(target_count < 0):
-            print("shutting down nfc because of error: {}".format(target_count))
-            self.shutdown()
 
         return uid
-
-            
