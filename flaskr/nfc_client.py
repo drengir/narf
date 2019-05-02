@@ -59,13 +59,6 @@ class Nfc():
                     uid = str(int.from_bytes(uid, byteorder='little'))
                     print("UID int: {}".format(uid))
 
-                    #for n in range(target_count):
-                        #print('Waiting for card removing...')
-                        #target = nfc.target()
-                        #res = nfc.initiator_target_is_present(device, target)
-                        #nfc_perror(device, "nfc_initiator_target_is_present")
-                        #printf("done.\n")
-
             nfc.close(device)
         nfc.exit(context)
         return uid
