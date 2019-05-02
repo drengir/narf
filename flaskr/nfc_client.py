@@ -50,7 +50,8 @@ class Nfc():
     def shutdown(self):
         if self.device:
             nfc.close(self.device)
-        nfc.exit(self.context)
+        if self.context:
+            nfc.exit(self.context)
 
     def get_id(self):
         try:
