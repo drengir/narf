@@ -62,7 +62,6 @@ class Calendar():
             event["eventDate"] = date
             if event == events[0]: event["mainEvent"] = True
             else:                  event["mainEvent"] = False
-        print(events)
         return events
 
 

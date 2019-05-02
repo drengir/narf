@@ -14,6 +14,10 @@ app = Flask(__name__)
 def root():
     return render_template('index.jinja')
 
+@app.route('/show')
+def show():
+    return render_template('show.jinja', map = request.args.get('map'))
+
 @app.route('/stream')
 def stream():
     def event_stream():
@@ -49,7 +53,6 @@ def get_message():
 
     data = {'time': time.ctime(time.time()), 'calendarEvents': jinja_render}
     return json.dumps(data)
-
 
 def get_calendar():
     cal = Calendar()
