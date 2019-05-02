@@ -3,15 +3,16 @@
 
 import sys
 import os
+import time
 
 import nfc
 
 VERBOSE = True
 MAX_DEVICE_COUNT = 4
-# indicates the polling period in units of 150 ms (0x01 – 0x0F: 150ms – 2.25s)
-POLLING_PERIOD = 1
-# specifies the number of polling (0x01 – 0xFE: 1 up to 254 polling, 0xFF: Endless polling)
-POLLING_NR = 30
+# plling period in ms
+POLLING_PERIOD = 100
+# polling timeout in ms
+POLLING_TIMEOUT = 8000
 
 class Nfc():
 
@@ -19,14 +20,14 @@ class Nfc():
         self.context = None
         self.device = None
         try:
-            self.polling_nr = int(os.environ['POLLING_NR'])
+            self.polling_timeout = int(os.environ['POLLING_TIMEOUT'])
         except:
-            self.polling_nr = POLLING_NR
+            self.polling_timeout = POLLING_TIMEOUT
         try:
             self.polling_period = int(os.environ['POLLING_PERIOD'])
         except:
             self.polling_period = POLLING_PERIOD
-        print('Using polling_period {} and polling_nr {}'.format(self.polling_period, self.polling_nr))
+        print('Using polling_period {} and polling_nr {}'.format(self.polling_period, self.polling_timeout))
 
     def open_device(self):
         self.context = nfc.init()
@@ -60,8 +61,13 @@ class Nfc():
             modulation.nmt = nfc.NMT_ISO14443A
             modulation.nbr = nfc.NBR_106
             # List ISO14443A targets
+            target_count = 0
             target = nfc.target()
-            target_count = nfc.initiator_poll_target(self.device, modulation, 1, self.polling_nr, self.polling_period, target)
+            start_time = time.time_ns()
+            while target_count == 0 and time.time_ns() - start_time < self.polling_timeout:
+                nfc.initiator_select_passive_target(self.device, modulation, 0, 0, target)
+                time.sleep(self.polling_period)
+
             if (target_count >= 0):
                 if (VERBOSE):
                     print(target_count, 'ISO14443A passive target(s) found')
