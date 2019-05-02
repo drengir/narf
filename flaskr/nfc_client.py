@@ -18,14 +18,15 @@ class Nfc():
     def __init__(self):
         self.context = None
         self.device = None
-        self.polling_period = os.environ['POLLING_NR']  if 'POLLING_PERIOD' in os.environ else POLLING_PERIOD
-        self.polling_nr = os.environ['POLLING_NR'] if 'POLLING_NR' in os.environ else POLLING_NR
-        print('Using polling_period {} and polling_nr {}'.format(self.polling_period, self.polling_nr))
-
         try:
-            self.open_device()
-        finally:
-            self.shutdown()
+            self.polling_nr = int(os.environ['POLLING_NR'])
+        except:
+            self.polling_nr = POLLING_NR
+        try:
+            self.polling_period = int(os.environ['POLLING_PERIOD'])
+        except:
+            self.polling_period = POLLING_NR
+        print('Using polling_period {} and polling_nr {}'.format(self.polling_period, self.polling_nr))
 
     def open_device(self):
         self.context = nfc.init()
@@ -52,22 +53,26 @@ class Nfc():
         nfc.exit(self.context)
 
     def get_id(self):
-        uid = None
-        modulation = nfc.modulation()
-
-        modulation.nmt = nfc.NMT_ISO14443A
-        modulation.nbr = nfc.NBR_106
-        # List ISO14443A targets
-        target = nfc.target()
-        target_count = nfc.initiator_poll_target(self.device, modulation, 1, self.polling_nr, self.polling_period, target)
-        if (target_count >= 0):
-            if (VERBOSE):
-                print(target_count, 'ISO14443A passive target(s) found')
-            nfc.print_nfc_target(target, VERBOSE)
-            uid_len = target.nti.nai.szUidLen
-            uid = target.nti.nai.abtUid[:uid_len]
-            print("UID byte: {}".format(uid))
-            uid = str(int.from_bytes(uid, byteorder='little'))
-            print("UID int: {}".format(uid))
-
-        return uid
+        try:
+            self.open_device()
+            modulation = nfc.modulation()
+            modulation.nmt = nfc.NMT_ISO14443A
+            modulation.nbr = nfc.NBR_106
+            # List ISO14443A targets
+            target = nfc.target()
+            target_count = nfc.initiator_poll_target(self.device, modulation, 1, self.polling_nr, self.polling_period, target)
+            if (target_count >= 0):
+                if (VERBOSE):
+                    print(target_count, 'ISO14443A passive target(s) found')
+                nfc.print_nfc_target(target, VERBOSE)
+                uid_len = target.nti.nai.szUidLen
+                uid = target.nti.nai.abtUid[:uid_len]
+                print("UID byte: {}".format(uid))
+                uid = str(int.from_bytes(uid, byteorder='little'))
+                print("UID int: {}".format(uid))
+                return uid
+        except:
+            # ignore exceptions
+            return None
+        finally:
+            self.shutdown()
