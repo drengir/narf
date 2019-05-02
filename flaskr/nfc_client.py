@@ -54,8 +54,9 @@ class Nfc():
                         print(target_count, 'ISO14443A passive target(s) found')
                     nfc.print_nfc_target(target, verbose)
                     uid = target.nti.nai.abtUid
-                    print("UID: {}".format(uid))
-                    print("Int: {}".format(int.from_bytes(uid)))
+                    print("UID byte: {}".format(uid))
+                    uid = int.from_bytes(uid, byteorder='little')
+                    print("UID int: {}".format(uid))
 
                     #for n in range(target_count):
                         #print('Waiting for card removing...')
@@ -66,4 +67,4 @@ class Nfc():
 
             nfc.close(device)
         nfc.exit(context)
-        return int.from_bytes(uid)
+        return uid
