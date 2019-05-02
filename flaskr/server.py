@@ -77,8 +77,8 @@ nfc = get_nfc()
 cal = get_calendar()
 nfc_mapping = {
     'mock_id': 'a3suuihq983gnr1k7td668lmpk@group.calendar.google.com',
-    '2702062626950': 'a3suuihq983gnr1k7td668lmpk@group.calendar.google.com',
-    '2703840730250': 'sagkegsn0eb8lesd8ej0gssnko@group.calendar.google.com'
+    '2306301066': 'a3suuihq983gnr1k7td668lmpk@group.calendar.google.com',
+    '528197766': 'sagkegsn0eb8lesd8ej0gssnko@group.calendar.google.com'
 }
 
 if __name__ == "__main__":
