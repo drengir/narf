@@ -1,23 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Lists the first target present of each found device"""
-
-from __future__ import print_function
-import nfc
 import sys
-import ctypes
+import os
 
-verbose = True
-mask = 0xff
-max_device_count = 16
-max_target_count = 16
+import nfc
+
+VERBOSE = True
+MAX_DEVICE_COUNT = 4
+# indicates the polling period in units of 150 ms (0x01 – 0x0F: 150ms – 2.25s)
+POLLING_PERIOD = 1
+# specifies the number of polling (0x01 – 0xFE: 1 up to 254 polling, 0xFF: Endless polling)
+POLLING_NR = 30
 
 class Nfc():
 
     def __init__(self):
         self.context = None
         self.device = None
+        self.polling_period = os.environ['POLLING_NR']  if 'POLLING_PERIOD' in os.environ else POLLING_PERIOD
+        self.polling_nr = os.environ['POLLING_NR'] if 'POLLING_NR' in os.environ else POLLING_NR
+        print('Using polling_period {} and polling_nr {}'.format(self.polling_period, self.polling_nr))
 
         try:
             self.open_device()
@@ -28,7 +31,7 @@ class Nfc():
         self.context = nfc.init()
         print("{} uses libnfc {}".format(sys.argv[0], nfc.__version__))
 
-        connstrings = nfc.list_devices(self.context, max_device_count)
+        connstrings = nfc.list_devices(self.context, MAX_DEVICE_COUNT)
         szDeviceFound = len(connstrings)
         if szDeviceFound == 0:
             raise Exception("No NFC reader found!")
@@ -56,11 +59,11 @@ class Nfc():
         modulation.nbr = nfc.NBR_106
         # List ISO14443A targets
         target = nfc.target()
-        target_count = nfc.initiator_poll_target(self.device, modulation, 1, 30, 1, target)
+        target_count = nfc.initiator_poll_target(self.device, modulation, 1, self.polling_nr, self.polling_period, target)
         if (target_count >= 0):
-            if (verbose):
+            if (VERBOSE):
                 print(target_count, 'ISO14443A passive target(s) found')
-            nfc.print_nfc_target(target, verbose)
+            nfc.print_nfc_target(target, VERBOSE)
             uid_len = target.nti.nai.szUidLen
             uid = target.nti.nai.abtUid[:uid_len]
             print("UID byte: {}".format(uid))
