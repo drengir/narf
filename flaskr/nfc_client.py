@@ -56,7 +56,7 @@ class Nfc():
                     uid_len = target.nti.nai.szUidLen
                     uid = target.nti.nai.abtUid[:uid_len]
                     print("UID byte: {}".format(uid))
-                    uid = int.from_bytes(uid, byteorder='little')
+                    uid = str(int.from_bytes(uid, byteorder='little'))
                     print("UID int: {}".format(uid))
 
                     #for n in range(target_count):
@@ -68,4 +68,4 @@ class Nfc():
 
             nfc.close(device)
         nfc.exit(context)
-        return str(uid)
+        return uid
