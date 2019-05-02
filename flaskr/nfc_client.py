@@ -8,7 +8,7 @@ import nfc
 import sys
 import ctypes
 
-verbose = False
+verbose = True
 mask = 0xff
 max_device_count = 16
 max_target_count = 16
@@ -16,6 +16,7 @@ max_target_count = 16
 class Nfc():
 
     def get_id(self):
+        uid = None
         context = nfc.init()
 
         # Display libnfc version
@@ -29,38 +30,39 @@ class Nfc():
             print("No NFC device found.")
         
         for i in range(szDeviceFound):
-            pnd = nfc.open(context, connstrings[i])
-            if pnd is None:
+            device = nfc.open(context, connstrings[i])
+            if device is None:
                 continue
 
-            if(nfc.initiator_init(pnd)<0):
-                nfc.perror(pnd, "nfc_initiator_init")
-                nfc.close(pnd)
+            if(nfc.initiator_init(device)<0):
+                nfc.perror(device, "nfc_initiator_init")
+                nfc.close(device)
                 nfc.exit(context)
                 exit()
 
-            print("NFC reader:", nfc.device_get_name(pnd), "opened")
+            print("NFC reader:", nfc.device_get_name(device), "opened")
 
-            nm = nfc.modulation()
+            modulation = nfc.modulation()
             if mask & 0x1:
-                nm.nmt = nfc.NMT_ISO14443A
-                nm.nbr = nfc.NBR_106
+                modulation.nmt = nfc.NMT_ISO14443A
+                modulation.nbr = nfc.NBR_106
                 # List ISO14443A targets
-                nt = nfc.target()
-                res = nfc.initiator_poll_target(pnd, nm, 1, 30, 2, nt)
-                if (res >= 0):
-                    if (verbose or (res > 0)):
-                        print(res, 'ISO14443A passive target(s) found')
-                    for n in range(res):
-                        nfc.print_nfc_target(nt, verbose)
-                        print('Waiting for card removing...')
-                        nt = nfc.target()
-                        res = nfc.initiator_target_is_present(pnd, nt)
-                        #nfc_perror(pnd, "nfc_initiator_target_is_present")
+                target = nfc.target()
+                target_count = nfc.initiator_poll_target(device, modulation, 1, 30, 20, target)
+                if (target_count >= 0):
+                    if (verbose):
+                        print(target_count, 'ISO14443A passive target(s) found')
+                    nfc.print_nfc_target(target, verbose)
+                    uid = target.nti.nai.abtUid
+
+                    #for n in range(target_count):
+                        #print('Waiting for card removing...')
+                        #target = nfc.target()
+                        #res = nfc.initiator_target_is_present(device, target)
+                        #nfc_perror(device, "nfc_initiator_target_is_present")
                         #printf("done.\n")
 
-            nfc.close(pnd)
+            nfc.close(device)
         nfc.exit(context)
-        uid = nt.nti.nai.abtUid
         print("UID: {}".format(uid))
         return uid
