@@ -10,25 +10,38 @@ from flask import Response
 from googlecalendar import Calendar
 
 app = Flask(__name__)
-send_queue = Queue()
+send_queues = {}
+nfc_mapping = {
+    'mock_id': 'a3suuihq983gnr1k7td668lmpk@group.calendar.google.com',
+    '2306301066': 'a3suuihq983gnr1k7td668lmpk@group.calendar.google.com',
+    '528197766': 'sagkegsn0eb8lesd8ej0gssnko@group.calendar.google.com'
+}
+
+class QueueManager:
+    client_counter = 0
+
+    def __enter__(self):
+        self.client_id = QueueManager.client_counter
+        QueueManager.client_counter += 1
+        print("starting queue for client_id: {}".format(self.client_id))
+        client_queue = Queue()
+        send_queues[self.client_id] = client_queue
+        return client_queue
+
+    def __exit__(self, type, value, traceback):
+        print("stopping queue for client_id: {}".format(self.client_id))
+        del send_queues[self.client_id]
+
+def send_event(jinja_render):
+    data = {'time': time.ctime(time.time()), 'calendarEvents': jinja_render}
+    for queue in send_queues.values():
+        queue.put(json.dumps(data))
 
 def poll_loop():
     print("Poll loop startet")
     while True:
         with app.app_context():
             get_message()
-
-@app.route('/')
-def root():
-    return render_template('index.jinja')
-
-@app.route('/stream')
-def stream():
-    def event_stream():
-        while True:
-            # wait for source data to be available, then push it
-            yield 'data: {}\n\n'.format(send_queue.get())
-    return Response(event_stream(), mimetype="text/event-stream")
 
 def get_message():
     # blocks for new id
@@ -53,10 +66,6 @@ def get_message():
         return
     send_event(render_template('calendar.jinja', events = events))
 
-def send_event(jinja_render):
-    data = {'time': time.ctime(time.time()), 'calendarEvents': jinja_render}
-    send_queue.put(json.dumps(data))
-
 def get_calendar():
     return  Calendar()
 
@@ -76,13 +85,21 @@ def get_nfc():
 def map_nfc_to_calendar_id(batch_id):
     return nfc_mapping.get(batch_id)
 
+@app.route('/')
+def root():
+    return render_template('index.jinja')
+
+@app.route('/stream')
+def stream():
+    def event_stream():
+        with QueueManager() as send_queue:
+            while True:
+                # wait for source data to be available, then push it
+                yield 'data: {}\n\n'.format(send_queue.get())
+    return Response(event_stream(), mimetype="text/event-stream")
+
 nfc = get_nfc()
 cal = get_calendar()
-nfc_mapping = {
-    'mock_id': 'a3suuihq983gnr1k7td668lmpk@group.calendar.google.com',
-    '2306301066': 'a3suuihq983gnr1k7td668lmpk@group.calendar.google.com',
-    '528197766': 'sagkegsn0eb8lesd8ej0gssnko@group.calendar.google.com'
-}
 
 if __name__ == "__main__":
     x = threading.Thread(target=poll_loop, daemon=True)
