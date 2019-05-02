@@ -22,7 +22,7 @@ class Nfc():
         try:
             self.open_device()
         finally:
-            self.shutdown
+            self.shutdown()
 
     def open_device(self):
         self.context = nfc.init()
