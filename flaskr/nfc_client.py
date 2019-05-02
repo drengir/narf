@@ -48,12 +48,14 @@ class Nfc():
                 modulation.nbr = nfc.NBR_106
                 # List ISO14443A targets
                 target = nfc.target()
-                target_count = nfc.initiator_poll_target(device, modulation, 1, 30, 20, target)
+                target_count = nfc.initiator_poll_target(device, modulation, 1, 30, 2, target)
                 if (target_count >= 0):
                     if (verbose):
                         print(target_count, 'ISO14443A passive target(s) found')
                     nfc.print_nfc_target(target, verbose)
                     uid = target.nti.nai.abtUid
+                    print("UID: {}".format(uid))
+                    print("Int: {}".format(int.from_bytes(uid)))
 
                     #for n in range(target_count):
                         #print('Waiting for card removing...')
@@ -64,5 +66,4 @@ class Nfc():
 
             nfc.close(device)
         nfc.exit(context)
-        print("UID: {}".format(uid))
-        return uid
+        return int.from_bytes(uid)

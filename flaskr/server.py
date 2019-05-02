@@ -70,6 +70,10 @@ def get_nfc():
 def map_nfc_to_calendar_id(batch_id):
     if batch_id == 'mock_id':
         return "a3suuihq983gnr1k7td668lmpk@group.calendar.google.com"
+    if batch_id == 2702062626950:
+        return "a3suuihq983gnr1k7td668lmpk@group.calendar.google.com"
+    if batch_id == 2703840730280:
+        return "sagkegsn0eb8lesd8ej0gssnko@group.calendar.google.com"
     return None
 
 nfc = get_nfc()
