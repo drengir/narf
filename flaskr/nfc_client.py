@@ -25,7 +25,7 @@ class Nfc():
         try:
             self.polling_period = int(os.environ['POLLING_PERIOD'])
         except:
-            self.polling_period = POLLING_NR
+            self.polling_period = POLLING_PERIOD
         print('Using polling_period {} and polling_nr {}'.format(self.polling_period, self.polling_nr))
 
     def open_device(self):
