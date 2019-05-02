@@ -53,7 +53,8 @@ class Nfc():
                     if (verbose):
                         print(target_count, 'ISO14443A passive target(s) found')
                     nfc.print_nfc_target(target, verbose)
-                    uid = target.nti.nai.abtUid
+                    uid_len = target.nti.nai.szUidLen
+                    uid = target.nti.nai.abtUid[:uid_len]
                     print("UID byte: {}".format(uid))
                     uid = int.from_bytes(uid, byteorder='little')
                     print("UID int: {}".format(uid))
@@ -67,4 +68,4 @@ class Nfc():
 
             nfc.close(device)
         nfc.exit(context)
-        return uid
+        return str(uid)

@@ -35,9 +35,12 @@ def get_message():
             return json.dumps(data)
 
     calendar_id = map_nfc_to_calendar_id(batch_id)
-
     if calendar_id is None:
-        raise Exception("No calendar mapping for uid {} found".format(batch_id))
+        with app.app_context():
+            print('No mapping for id {} found'.format(batch_id))
+            jinja_render = render_template('slacktime.jinja')
+            data = {'time': time.ctime(time.time()), 'calendarEvents': jinja_render}
+            return json.dumps(data)
 
     events = cal.get_events(calendar_id)
     if not events:
@@ -68,16 +71,15 @@ def get_nfc():
     return Nfc()
 
 def map_nfc_to_calendar_id(batch_id):
-    if batch_id == 'mock_id':
-        return "a3suuihq983gnr1k7td668lmpk@group.calendar.google.com"
-    if batch_id == 2702062626950:
-        return "a3suuihq983gnr1k7td668lmpk@group.calendar.google.com"
-    if batch_id == 2703840730250:
-        return "sagkegsn0eb8lesd8ej0gssnko@group.calendar.google.com"
-    return None
+    return nfc_mapping.get(batch_id)
 
 nfc = get_nfc()
 cal = get_calendar()
+nfc_mapping = {
+    'mock_id': 'a3suuihq983gnr1k7td668lmpk@group.calendar.google.com',
+    '2702062626950': 'a3suuihq983gnr1k7td668lmpk@group.calendar.google.com',
+    '2703840730250': 'sagkegsn0eb8lesd8ej0gssnko@group.calendar.google.com'
+}
 
 if __name__ == "__main__":
     app.run(host = "0.0.0.0")
