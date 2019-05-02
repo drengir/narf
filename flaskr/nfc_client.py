@@ -27,7 +27,7 @@ class Nfc():
             self.polling_period = int(os.environ['POLLING_PERIOD'])
         except:
             self.polling_period = POLLING_PERIOD
-        print('Using polling_period {} and polling_nr {}'.format(self.polling_period, self.polling_timeout))
+        print('Using polling_period {} and polling_timeout {}'.format(self.polling_period, self.polling_timeout))
 
     def open_device(self):
         self.context = nfc.init()
@@ -61,11 +61,12 @@ class Nfc():
             modulation.nmt = nfc.NMT_ISO14443A
             modulation.nbr = nfc.NBR_106
             # List ISO14443A targets
-            target_count = 0
             target = nfc.target()
             start_time = time.time_ns()
-            while target_count == 0 and time.time_ns() - start_time < self.polling_timeout:
-                nfc.initiator_select_passive_target(self.device, modulation, 0, 0, target)
+            while time.time_() - start_time < self.polling_timeout * 1000:
+                target_count = nfc.initiator_select_passive_target(self.device, modulation, 0, 0, target)
+                if target_count >= 0:
+                    break
                 time.sleep(self.polling_period)
 
             if (target_count >= 0):
