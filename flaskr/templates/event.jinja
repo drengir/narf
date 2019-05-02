@@ -7,11 +7,14 @@
       <h6>Bis: {{ event.endTime }}</h6>
     </p>
     <div class="empty-action">
+      {% if event.location == "no_room" %}
+      <h2>Kein Raum</h2>
+      {% else %}
       <h2>{{ event.location }}</h2>
-
       <button class="btn btn-lg" onclick="showMap('{{ event.location }}')">
         <img src="static/images/{{ event.location }}_arrow.png" alt="arrow" width="150" height="30">
       </button>
+      {% endif %}
     </div>
   </div>
 </div>

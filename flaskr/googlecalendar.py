@@ -44,7 +44,7 @@ class Calendar():
                                               orderBy='startTime').execute()
         events = events_result.get('items', [])
 
-        if not events: 
+        if not events:
             print(cal_id[:26], "-> No events found")
             return {}
 
@@ -55,7 +55,7 @@ class Calendar():
             date   = start.split("T")[0]
             start2 = start.split("T")[1].split("+")[0]
             end2   = end.split("T")[1].split("+")[0]
-            if not "location" in event: event["location"] = "no room"
+            if not "location" in event: event["location"] = "no_room"
             print(cal_id[:26], "->", start, "-", end, event['summary'], event["location"])
             event["startTime"] = start2
             event["endTime"]   = end2
