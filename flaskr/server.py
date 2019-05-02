@@ -2,7 +2,7 @@ import time
 import json
 import os
 import threading
-from queue import SimpleQueue
+from queue import Queue
 
 from flask import Flask
 from flask import render_template
@@ -10,7 +10,7 @@ from flask import Response
 from googlecalendar import Calendar
 
 app = Flask(__name__)
-send_queue = SimpleQueue()
+send_queue = Queue()
 
 def poll_loop():
     print("Poll loop startet")
