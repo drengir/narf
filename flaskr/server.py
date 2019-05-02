@@ -72,7 +72,7 @@ def map_nfc_to_calendar_id(batch_id):
         return "a3suuihq983gnr1k7td668lmpk@group.calendar.google.com"
     if batch_id == 2702062626950:
         return "a3suuihq983gnr1k7td668lmpk@group.calendar.google.com"
-    if batch_id == 2703840730280:
+    if batch_id == 2703840730250:
         return "sagkegsn0eb8lesd8ej0gssnko@group.calendar.google.com"
     return None
 
