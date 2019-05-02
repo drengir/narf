@@ -2,14 +2,16 @@
   <div class="empty {% if not event.mainEvent %}opacity{% endif %}">
     <p class="empty-title">
       <h4>{{ event.summary }}</h4>
-      <h5>{{ event.eventDate }}</h5>
-      <h5>Von: {{ event.startTime }}</h5>
-      <h5>Bis: {{ event.endTime }}</h5>
+      <h6>{{ event.eventDate }}</h6>
+      <h6>Von: {{ event.startTime }}</h6>
+      <h6>Bis: {{ event.endTime }}</h6>
     </p>
     <div class="empty-action">
       <h2>{{ event.location }}</h2>
-      <img src="static/images/{{ event.location }}_arrow.png" alt="arrow">
-      <button class="btn" onclick="showMap('{{ event.location }}')">Situationsplan</button>
+
+      <button class="btn btn-lg" onclick="showMap('{{ event.location }}')">
+        <img src="static/images/{{ event.location }}_arrow.png" alt="arrow" width="150" height="30">
+      </button>
     </div>
   </div>
 </div>
