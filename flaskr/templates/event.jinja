@@ -1,19 +1,14 @@
 <div class="column col-xs-4">
-<div class="empty {% if not event.mainEvent %}opacity{% endif %}">
-  <div class="empty-icon">
-    <i class="icon icon-time"></i>
+  <div class="empty {% if not event.mainEvent %}opacity{% endif %}">
+    <p class="empty-title">
+      <h4>{{ event.summary }}</h4>
+      <h5>{{ event.eventDate }}</h5>
+      <h5>Von: {{ event.startTime }}</h5>
+      <h5>Bis: {{ event.endTime }}</h5>
+    </p>
+    <div class="empty-action">
+      <h2>{{ event.location }}</h2>
+      <button class="btn" onclick="showMap('{{ event.location }}')">Situationsplan</button>
+    </div>
   </div>
-  <p class="empty-title">
-    <h3>{{ event.summary }}</h3>
-    <h5>Datum: {{ event.eventDate }}</h5>
-    <h5>Von: {{ event.startTime }}</h5>
-    <h5>Bis: {{ event.endTime }}</h5>
-  </p>
-  <div class="empty-action">
-    <h1>{{ event.location }}</h1>
-    <form action="show?map={{ event.location }}.jpg">
-      <button class="btn btn-lg">Situationsplan</button>
-    </form>
-  </div>
-</div>
 </div>

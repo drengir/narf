@@ -14,10 +14,6 @@ app = Flask(__name__)
 def root():
     return render_template('index.jinja')
 
-@app.route('/show')
-def show():
-    return render_template('show.jinja', map = request.args.get('map'))
-
 @app.route('/stream')
 def stream():
     def event_stream():
@@ -45,11 +41,11 @@ def get_message():
 
     events = cal.get_events(calendar_id)
     if not events:
-        data = {'time': time.ctime(time.time()), 'calendarEvents': "Calendar not found :-("}
-        return json.dumps(data)
-
-    with app.app_context():
-        jinja_render = render_template('calendar.jinja', events = events)
+        with app.app_context():
+            jinja_render = render_template('slacktime.jinja')
+    else:
+        with app.app_context():
+            jinja_render = render_template('calendar.jinja', events = events)
 
     data = {'time': time.ctime(time.time()), 'calendarEvents': jinja_render}
     return json.dumps(data)
