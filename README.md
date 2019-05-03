@@ -3,7 +3,7 @@
 # narf
 Pinky and the Brain
 
-Project narf of team Drengir for the CDAYS 2019: <https://www.cdays.be/>
+Project N.A.R.F (NFC Assisted Room Finder) of team Drengir for the CDAYS 2019: <https://www.cdays.be/>
 
 ## Mocking
 
