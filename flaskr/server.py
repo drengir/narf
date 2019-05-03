@@ -59,7 +59,7 @@ def get_message():
     calendar_id = map_nfc_to_calendar_id(batch_id)
     if calendar_id is None:
         print('No mapping for id {} found'.format(batch_id))
-        time.sleep(0.2)
+        time.sleep(0.5)
         send_event(render_template('slacktime.jinja'))
         return
 
