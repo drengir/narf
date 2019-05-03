@@ -47,6 +47,9 @@ def get_message():
     # blocks for new id
     batch_id = nfc.get_id()
 
+    # send loading page first
+    send_event(render_template('loading.jinja'))
+
     # return empty page
     if batch_id is None:
         print("batch_id is empty, resetting to start page")
@@ -56,10 +59,10 @@ def get_message():
     calendar_id = map_nfc_to_calendar_id(batch_id)
     if calendar_id is None:
         print('No mapping for id {} found'.format(batch_id))
+        time.sleep(0.2)
         send_event(render_template('slacktime.jinja'))
         return
 
-    send_event(render_template('loading.jinja'))
     events = cal.get_events(calendar_id)
     if not events:
         send_event(render_template('slacktime.jinja'))
